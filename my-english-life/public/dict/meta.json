@@ -1,0 +1,96 @@
+{
+  "version": "2026-11-13",
+  "builtAt": "2026-11-13T12:15:16.630Z",
+  "count": 1000,
+  "target": 1000,
+  "shards": [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y"
+  ],
+  "stats": {
+    "total": 1000,
+    "ja": 935,
+    "jaFromJaWiki": 913,
+    "jaFromTranslations": 22,
+    "cefr": 856,
+    "ipa": 993,
+    "examples": 917,
+    "syn": 754,
+    "ant": 405,
+    "slang": 318
+  },
+  "cefr": {
+    "A1": 509,
+    "A2": 236,
+    "B1": 87,
+    "B2": 23,
+    "C1": 1,
+    "C2": 0,
+    "none": 144
+  },
+  "sources": [
+    {
+      "name": "Wiktionary（英語版）",
+      "via": "kaikki.org / wiktextract",
+      "url": "https://en.wiktionary.org/",
+      "license": "CC BY-SA 4.0 / GFDL",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "use": "定義・品詞・発音記号・例文（作例のみ）・類義語・反意語・翻訳表の日本語訳・スラング等の表示"
+    },
+    {
+      "name": "Wiktionary（日本語版）",
+      "via": "kaikki.org / wiktextract",
+      "url": "https://ja.wiktionary.org/",
+      "license": "CC BY-SA 4.0 / GFDL",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "use": "日本語の語義"
+    },
+    {
+      "name": "The CEFR-J Wordlist Version 1.5",
+      "via": "Compiled by Yukio Tono, Tokyo University of Foreign Studies. Retrieved from http://www.cefr-j.org/download.html",
+      "url": "https://github.com/openlanguageprofiles/olp-en-cefrj",
+      "license": "研究・商用とも無料（出典の明記が条件）。著作権: 東京外国語大学 投野研究室",
+      "use": "CEFR A1〜B2"
+    },
+    {
+      "name": "Octanove Vocabulary Profile C1/C2 1.0",
+      "via": "Octanove Labs",
+      "url": "https://github.com/openlanguageprofiles/olp-en-cefrj",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "use": "CEFR C1〜C2"
+    },
+    {
+      "name": "wordfreq",
+      "via": "Robyn Speer ほか",
+      "url": "https://github.com/rspeer/wordfreq",
+      "license": "データ: CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "use": "収録する語の選定（頻度順）。頻度の数値は収録していません"
+    }
+  ],
+  "changes": "元データから、学習に使う項目だけを抜き出して形式を変えています（古語・まれな語義・活用形・固有名詞・引用文・音声は除外）。内容の書き換えや翻訳はしていません。"
+}
