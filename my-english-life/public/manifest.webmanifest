@@ -1,0 +1,24 @@
+{
+  "id": "/",
+  "name": "My English Life",
+  "short_name": "My English",
+  "description": "覚えた英語を、使える英語に。",
+  "lang": "ja",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf9ff",
+  "theme_color": "#6a45f5",
+  "categories": ["education"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "単語を登録", "url": "/words/new", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "今日の復習", "url": "/review", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

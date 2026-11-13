@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/*
+ * My English Life デザインシステム
+ * ------------------------------------------------------------
+ * 色はすべて CSS 変数（セマンティックトークン）で管理し、
+ * ライト／ダークの切替は変数の差し替えだけで行う。
+ * そのためコンポーネント側に dark: 指定はほぼ不要。
+ *
+ * テーマ: <html data-theme="light|dark"> が無い場合は OS 設定に従う。
+ */
+
+:root {
+  --bg: #faf9ff;
+  --surface: #ffffff;
+  --surface-muted: #f5f2ff;
+  --lavender: #ece6ff;
+  --border: #e4ddf7;
+  --ink: #1e1a2e;
+  --ink-muted: #5d5676;
+  --ink-subtle: #77708f;
+  --primary: #6a45f5;
+  --primary-strong: #5632e0;
+  --primary-soft: #efe9ff;
+  --on-primary: #ffffff;
+  --success: #17794f;
+  --success-soft: #e3f5ec;
+  --warning: #9a5b00;
+  --warning-soft: #fff3dc;
+  --danger: #b4233f;
+  --danger-soft: #fde8ec;
+  --ring: #8b6cff;
+  --shadow-color: 260 60% 40%;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13101e;
+    --surface: #1c1830;
+    --surface-muted: #241f3b;
+    --lavender: #2c2549;
+    --border: #3a3259;
+    --ink: #f3f0fb;
+    --ink-muted: #bdb5d8;
+    --ink-subtle: #a49cc2;
+    --primary: #a88dff;
+    --primary-strong: #c0aeff;
+    --primary-soft: #2f2654;
+    --on-primary: #160d33;
+    --success: #6fd9a5;
+    --success-soft: #16332a;
+    --warning: #f4bb66;
+    --warning-soft: #392a13;
+    --danger: #ff93a7;
+    --danger-soft: #3c1a25;
+    --ring: #b9a5ff;
+    --shadow-color: 260 50% 3%;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #13101e;
+  --surface: #1c1830;
+  --surface-muted: #241f3b;
+  --lavender: #2c2549;
+  --border: #3a3259;
+  --ink: #f3f0fb;
+  --ink-muted: #bdb5d8;
+  --ink-subtle: #a49cc2;
+  --primary: #a88dff;
+  --primary-strong: #c0aeff;
+  --primary-soft: #2f2654;
+  --on-primary: #160d33;
+  --success: #6fd9a5;
+  --success-soft: #16332a;
+  --warning: #f4bb66;
+  --warning-soft: #392a13;
+  --danger: #ff93a7;
+  --danger-soft: #3c1a25;
+  --ring: #b9a5ff;
+  --shadow-color: 260 50% 3%;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-lavender: var(--lavender);
+  --color-line: var(--border);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+  --shadow-card: 0 1px 2px hsl(var(--shadow-color) / 0.06), 0 6px 20px -8px hsl(var(--shadow-color) / 0.14);
+  --shadow-float: 0 -4px 24px -12px hsl(var(--shadow-color) / 0.25);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    font-feature-settings: "palt" 0;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  ::selection {
+    background-color: var(--lavender);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility english {
+  /* 英文は欧文フォントで、少し詰めて読みやすく */
+  font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.005em;
+  line-height: 1.5;
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 下部ナビのすぐ上に固定する操作ボタン用（iPhone のホームバー分も考慮） */
+@utility bottom-above-nav {
+  bottom: calc(4rem + env(safe-area-inset-bottom));
+}
+
+@utility pb-nav-space {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+}
