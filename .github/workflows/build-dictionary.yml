@@ -25,6 +25,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: my-english-life
     steps:
       - uses: actions/checkout@v4
 
