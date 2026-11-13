@@ -1,0 +1,83 @@
+# 収録辞書（public/dict/）を作る — GitHub の「Actions」タブから手動で実行します（無料）
+#   1. Actions → 「収録辞書を作る」 → Run workflow → 語数を選んで実行
+#   2. 終わると public/dict/ が更新されてコミットされ、Vercel が自動で公開します
+# データ: Wiktionary（kaikki.org）/ CEFR-J Wordlist 1.5 / Octanove C1/C2 / wordfreq（すべて無料・ライセンス確認済み）
+name: 収録辞書を作る
+
+on:
+  workflow_dispatch:
+    inputs:
+      size:
+        description: "収録する語数（段階的に増やす）"
+        required: true
+        default: "1000"
+        type: choice
+        options: ["1000", "5000", "10000", "15000"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-dictionary
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 頻度リスト（wordfreq）を作る
+        run: |
+          pip install --quiet wordfreq
+          python -c "from wordfreq import top_n_list; print('\n'.join(top_n_list('en', 60000)))" > /tmp/freq.txt
+          wc -l /tmp/freq.txt
+
+      - name: CEFR の語彙表をダウンロード（CEFR-J / Octanove）
+        run: |
+          base=https://raw.githubusercontent.com/openlanguageprofiles/olp-en-cefrj/master
+          curl -fsSL --retry 3 -o /tmp/cefrj.csv "$base/cefrj-vocabulary-profile-1.5.csv"
+          curl -fsSL --retry 3 -o /tmp/octanove.csv "$base/octanove-vocabulary-profile-c1c2-1.0.csv"
+          head -2 /tmp/cefrj.csv /tmp/octanove.csv
+
+      - name: 英語版 Wiktionary（kaikki.org）をダウンロード
+        run: |
+          curl -fL --retry 3 --retry-delay 20 -o /tmp/en.jsonl.gz https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
+          ls -lh /tmp/en.jsonl.gz
+
+      - name: 日本語版 Wiktionary（kaikki.org）をダウンロード
+        # 取れなくても辞書は作れる（日本語訳の割合が下がるだけ）
+        continue-on-error: true
+        run: |
+          curl -fL --retry 3 --retry-delay 20 -o /tmp/ja.jsonl.gz https://kaikki.org/jawiktionary/raw-wiktextract-data.jsonl.gz
+          ls -lh /tmp/ja.jsonl.gz
+
+      - name: テスト（架空データで動作確認）
+        run: node --test scripts/dict/build.test.mjs
+
+      - name: 辞書データを作る
+        run: |
+          ja_arg=""
+          if [ -s /tmp/ja.jsonl.gz ]; then ja_arg="--ja /tmp/ja.jsonl.gz"; fi
+          node scripts/dict/build-dictionary.mjs --size "${{ inputs.size }}" \
+            --en /tmp/en.jsonl.gz $ja_arg --freq /tmp/freq.txt \
+            --cefrj /tmp/cefrj.csv --octanove /tmp/octanove.csv --out public/dict
+          du -sh public/dict
+
+      - name: コミットして公開
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/dict
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -m "辞書データを更新（${{ inputs.size }}語）"
+          git push
